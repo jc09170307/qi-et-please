@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Qi-et Please">
+<meta name="theme-color" content="#7c5cbf">
+<title>Qi-et Please 🤫</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+button,input,textarea,select{font-family:inherit;-webkit-appearance:none;appearance:none}
+:root{
+  --pur:#7c5cbf;--pur2:#9b7dd4;--purL:#2a1f4a;--purD:#4a3680;
+  --teal:#12a37a;--teal2:#0d7a5c;--tealL:#082d1c;
+  --gold:#c9973a;--goldL:#3a2a0a;
+  --bg:#0d0f1a;--bg2:#12141f;--bg3:#1a1d2e;--bg4:#20233a;
+  --tx:#e8e6f0;--tx2:#a8a4c0;--tx3:#5a5870;
+  --bd:rgba(124,92,191,.15);--bd2:rgba(255,255,255,.06);
+  --card:#12141f;--nav:#0d0f1a;
+}
+[data-theme="light"]{
+  --bg:#f4f2fc;--bg2:#fff;--bg3:#ede9f8;--bg4:#e4dff5;
+  --tx:#1a1730;--tx2:#4a4670;--tx3:#9090b0;
+  --bd:rgba(124,92,191,.2);--bd2:rgba(0,0,0,.06);
+  --card:#fff;--nav:#f4f2fc;--purL:#ede9f8;--tealL:#e1f5ee;
+}
+html,body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+body{padding-bottom:4rem}
+
+.hdr{padding:.85rem 1rem .75rem;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;background:var(--bg);position:sticky;top:0;z-index:200}
+.hdr-brand{font-family:'DM Serif Display',serif;font-size:17px;color:var(--pur2)}
+.hdr-brand em{color:var(--gold);font-style:italic}
+.theme-btn{background:var(--bg3);border:none;border-radius:20px;padding:5px 10px;font-size:13px;cursor:pointer;color:var(--tx2)}
+
+.nav-wrap{position:sticky;top:49px;z-index:100;background:var(--nav);border-bottom:1px solid var(--bd);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nav-wrap::-webkit-scrollbar{display:none}
+.nav-inner{display:flex;gap:4px;padding:.4rem .75rem;width:max-content}
+.pill{font-size:11.5px;padding:5px 14px;border:1px solid var(--bd2);border-radius:100px;background:var(--bg3);cursor:pointer;color:var(--tx2);white-space:nowrap;font-weight:500;transition:all .12s}
+.pill.active{background:var(--pur);color:#fff;border-color:var(--pur);font-weight:600}
+
+.sec{padding:.75rem 1rem 3rem;display:none}
+.sec.active{display:block}
+.sec-lbl{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;padding:.6rem 0 .4rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:1rem 1.1rem;margin-bottom:.6rem}
+
+/* ── PRACTICE SCREEN ── */
+.practice-wrap{display:flex;flex-direction:column;align-items:center;padding:1.5rem 1rem 2rem;gap:1.25rem}
+
+/* body clock suggestion */
+.clock-suggestion{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:.65rem 1rem;width:100%;text-align:center}
+.clock-suggestion-lbl{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em}
+.clock-suggestion-text{font-size:13px;color:var(--pur2);margin-top:.2rem;font-weight:500}
+
+/* practice type */
+.type-scroll{display:flex;gap:.5rem;overflow-x:auto;width:100%;padding-bottom:.25rem;scrollbar-width:none}
+.type-scroll::-webkit-scrollbar{display:none}
+.type-btn{flex-shrink:0;padding:.6rem 1rem;border:1.5px solid var(--bd2);border-radius:12px;background:var(--bg3);color:var(--tx2);font-size:13px;font-weight:500;cursor:pointer;transition:all .14s;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:.2rem;min-width:80px}
+.type-btn .t-icon{font-size:22px}
+.type-btn .t-name{font-size:10px;font-weight:600;letter-spacing:.03em}
+.type-btn.active{border-color:var(--pur);background:var(--purL);color:var(--pur2)}
+
+/* duration */
+.duration-row{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;width:100%}
+.dur-btn{padding:.5rem .9rem;border:1.5px solid var(--bd2);border-radius:20px;background:var(--bg3);color:var(--tx2);font-size:13px;font-weight:500;cursor:pointer;transition:all .12s}
+.dur-btn.active{border-color:var(--teal);background:var(--tealL);color:var(--teal)}
+
+/* options row */
+.options-row{display:flex;gap:.5rem;width:100%;flex-wrap:wrap}
+.opt-btn{flex:1;min-width:80px;padding:.5rem;border:1.5px solid var(--bd2);border-radius:10px;background:var(--bg3);color:var(--tx3);font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;text-align:center}
+.opt-btn.active{border-color:var(--pur);color:var(--pur2);background:var(--purL)}
+
+/* intention */
+.intention-wrap{width:100%}
+.element-chips{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center}
+.el-chip{padding:.4rem .8rem;border:1.5px solid var(--bd2);border-radius:20px;background:var(--bg3);color:var(--tx3);font-size:12px;cursor:pointer;transition:all .12s}
+.el-chip.active{font-weight:600}
+.el-chip.wood.active{border-color:#3a8a3a;color:#5ab85a;background:rgba(58,138,58,.12)}
+.el-chip.fire.active{border-color:#c04030;color:#e06050;background:rgba(192,64,48,.12)}
+.el-chip.earth.active{border-color:var(--gold);color:var(--gold);background:var(--goldL)}
+.el-chip.metal.active{border-color:#a0a8c0;color:#c0c8e0;background:rgba(160,168,192,.1)}
+.el-chip.water.active{border-color:var(--pur);color:var(--pur2);background:var(--purL)}
+
+/* START BUTTON */
+.start-practice-btn{width:100%;max-width:320px;padding:16px;background:var(--pur);color:#fff;border:none;border-radius:16px;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .12s;font-family:'DM Sans',sans-serif;letter-spacing:-.1px}
+.start-practice-btn:active{opacity:.82}
+
+/* ── TIMER OVERLAY ── */
+#timer-overlay{display:none;position:fixed;inset:0;z-index:500;background:var(--bg);flex-direction:column;align-items:center;justify-content:space-between;padding:2rem 1.5rem 3rem}
+#timer-overlay.active{display:flex}
+
+.timer-type{font-size:12px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
+.timer-element{font-size:12px;color:var(--pur2);margin-bottom:1.5rem}
+
+/* breathing orb */
+.orb-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:260px;height:260px}
+.orb-ring{position:absolute;border-radius:50%;border:1.5px solid rgba(124,92,191,.2);animation:none}
+.orb-ring.r1{width:260px;height:260px}
+.orb-ring.r2{width:220px;height:220px;border-color:rgba(124,92,191,.15)}
+.orb-ring.r3{width:180px;height:180px;border-color:rgba(124,92,191,.12)}
+.orb{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 38% 35%,var(--pur2),var(--pur),var(--purD));position:relative;cursor:pointer;transition:none;box-shadow:0 0 40px rgba(124,92,191,.25)}
+.timer-display{position:absolute;text-align:center;pointer-events:none}
+.timer-min{font-family:'DM Serif Display',serif;font-size:42px;color:#fff;line-height:1;letter-spacing:-2px}
+.timer-sec{font-size:14px;color:rgba(255,255,255,.6);margin-top:.1rem}
+.breath-label{font-size:12px;color:var(--pur2);margin-top:.35rem;font-weight:500;min-height:18px;text-align:center}
+
+@keyframes orbExpand{0%{transform:scale(1)}50%{transform:scale(1.22)}100%{transform:scale(1)}}
+@keyframes ringPulse{0%{transform:scale(1);opacity:.4}50%{transform:scale(1.15);opacity:.15}100%{transform:scale(1);opacity:.4}}
+@keyframes inhale{0%{transform:scale(1)}100%{transform:scale(1.22)}}
+@keyframes exhale{0%{transform:scale(1.22)}100%{transform:scale(1)}}
+
+.timer-controls{display:flex;gap:.75rem;align-items:center}
+.t-ctrl-btn{width:52px;height:52px;border-radius:50%;border:1.5px solid var(--bd2);background:var(--bg3);color:var(--tx2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.t-ctrl-btn:active{opacity:.75}
+.t-ctrl-main{width:68px;height:68px;border-radius:50%;border:none;background:var(--pur);color:#fff;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(124,92,191,.35)}
+.t-ctrl-main:active{opacity:.82}
+.timer-end-btn{font-size:12px;color:var(--tx3);background:none;border:none;cursor:pointer;padding:.35rem .75rem;margin-top:.25rem}
+
+/* ── LOG ── */
+.streak-hero{background:linear-gradient(135deg,#100f20,#0d1530);border:1px solid var(--bd);border-radius:22px;padding:1.25rem;margin:.5rem 0 .85rem;display:grid;grid-template-columns:auto 1fr auto;gap:.75rem;align-items:center}
+.streak-num{font-family:'DM Serif Display',serif;font-size:52px;color:var(--pur2);line-height:1;letter-spacing:-2px}
+.streak-lbl{font-size:12px;color:var(--tx3)}
+.streak-sub{font-size:11px;color:var(--tx3);margin-top:.15rem}
+.total-time{text-align:right}
+.total-time-val{font-family:'DM Serif Display',serif;font-size:28px;color:var(--teal);line-height:1}
+.total-time-lbl{font-size:10px;color:var(--tx3);margin-top:.1rem}
+.log-entry{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:.85rem 1rem;margin-bottom:.45rem;display:flex;gap:.75rem;align-items:center}
+.le-icon{font-size:24px;flex-shrink:0}
+.le-info{flex:1}
+.le-name{font-size:13px;font-weight:600;color:var(--tx)}
+.le-meta{font-size:11px;color:var(--tx3);margin-top:1px}
+.le-dur{font-size:13px;font-weight:600;color:var(--pur2);flex-shrink:0}
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:.5rem 0}
+.hm-cell{aspect-ratio:1;border-radius:3px;background:var(--bg3)}
+.hm-cell.l1{background:rgba(124,92,191,.25)}
+.hm-cell.l2{background:rgba(124,92,191,.55)}
+.hm-cell.l3{background:var(--pur2)}
+
+/* ── LIBRARY ── */
+.lib-card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:1rem 1.1rem;margin-bottom:.55rem;cursor:pointer;transition:border-color .12s}
+.lib-card:active{border-color:var(--pur)}
+.lib-card-hdr{display:flex;align-items:center;gap:.75rem;margin-bottom:.4rem}
+.lib-icon{font-size:26px}
+.lib-name{font-size:15px;font-weight:600;color:var(--tx)}
+.lib-origin{font-size:10px;font-weight:700;color:var(--pur2);text-transform:uppercase;letter-spacing:.07em;margin-top:1px}
+.lib-desc{font-size:12px;color:var(--tx2);line-height:1.6;margin-bottom:.4rem}
+.lib-tags{display:flex;gap:.3rem;flex-wrap:wrap}
+.lib-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--purL);color:var(--pur2);border:1px solid var(--bd)}
+
+/* ── INSIGHTS ── */
+.ins-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.65rem}
+.ins-card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:.9rem;text-align:center}
+.ins-val{font-family:'DM Serif Display',serif;font-size:30px;color:var(--pur2)}
+.ins-lbl{font-size:11px;color:var(--tx3);margin-top:3px}
+.tod-bar{display:flex;gap:2px;align-items:flex-end;height:48px;margin:.5rem 0}
+.tod-col{flex:1;background:var(--pur);border-radius:2px 2px 0 0;min-height:2px;opacity:.6}
+.tod-col.peak{opacity:1;background:var(--pur2)}
+.tod-lbl-row{display:flex;gap:2px;margin-top:3px}
+.tod-lbl{flex:1;font-size:8px;color:var(--tx3);text-align:center}
+
+/* TOAST */
+.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(10px);background:var(--bg2);border:1px solid var(--pur);border-radius:20px;padding:.5rem 1.1rem;font-size:13px;color:var(--tx);z-index:9999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.field-lbl{font-size:11px;color:var(--tx3);margin-bottom:.25rem;font-weight:500;display:block}
+.field{width:100%;border:1.5px solid var(--bd2);border-radius:10px;padding:.6rem .8rem;font-size:14px;background:var(--bg3);color:var(--tx);outline:none;transition:border .15s;font-family:'DM Sans',sans-serif}
+.field:focus{border-color:var(--pur)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-brand">Qi-et Please <em>🤫</em></div>
+  <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">☀️</button>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <button class="pill active" onclick="showSec('practice')">🧘 Practice</button>
+    <button class="pill" onclick="showSec('log')">📜 Log</button>
+    <button class="pill" onclick="showSec('library')">📚 Library</button>
+    <button class="pill" onclick="showSec('insights')">✨ Insights</button>
+  </div>
+</div>
+
+<!-- ════════════════ PRACTICE ════════════════ -->
+<div class="sec active" id="sec-practice">
+  <div class="practice-wrap">
+
+    <div class="clock-suggestion" id="clock-suggestion">
+      <div class="clock-suggestion-lbl">Body clock · now</div>
+      <div class="clock-suggestion-text" id="clock-text">Loading...</div>
+    </div>
+
+    <div style="width:100%">
+      <div class="sec-lbl">Practice type</div>
+      <div class="type-scroll" id="type-scroll"></div>
+    </div>
+
+    <div style="width:100%">
+      <div class="sec-lbl">Duration</div>
+      <div class="duration-row" id="duration-row">
+        <button class="dur-btn" onclick="setDur(5,this)">5 min</button>
+        <button class="dur-btn" onclick="setDur(10,this)">10 min</button>
+        <button class="dur-btn active" onclick="setDur(20,this)">20 min</button>
+        <button class="dur-btn" onclick="setDur(30,this)">30 min</button>
+        <button class="dur-btn" onclick="setDur(45,this)">45 min</button>
+        <button class="dur-btn" onclick="setDur(60,this)">60 min</button>
+      </div>
+    </div>
+
+    <div style="width:100%">
+      <div class="sec-lbl">Options</div>
+      <div class="options-row">
+        <button class="opt-btn active" id="opt-bell" onclick="toggleOpt('bell',this)">🔔 Opening bell</button>
+        <button class="opt-btn active" id="opt-interval" onclick="toggleOpt('interval',this)">⏱ Interval bells</button>
+        <button class="opt-btn" id="opt-ambient" onclick="toggleOpt('ambient',this)">🎵 Ambient tone</button>
+      </div>
+    </div>
+
+    <div class="intention-wrap">
+      <div class="sec-lbl">Five Element intention (optional)</div>
+      <div class="element-chips">
+        <button class="el-chip wood" onclick="setElement('wood',this)">🌿 Wood · Growth</button>
+        <button class="el-chip fire" onclick="setElement('fire',this)">🔥 Fire · Joy</button>
+        <button class="el-chip earth" onclick="setElement('earth',this)">🌍 Earth · Stability</button>
+        <button class="el-chip metal" onclick="setElement('metal',this)">🔮 Metal · Release</button>
+        <button class="el-chip water" onclick="setElement('water',this)">💧 Water · Stillness</button>
+      </div>
+    </div>
+
+    <button class="start-practice-btn" onclick="startSession()">Begin Practice</button>
+  </div>
+</div>
+
+<!-- ════════════════ TIMER OVERLAY ════════════════ -->
+<div id="timer-overlay">
+  <div style="text-align:center;width:100%">
+    <div class="timer-type" id="t-type-lbl">Sitting Meditation</div>
+    <div class="timer-element" id="t-element-lbl"></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:.5rem">
+    <div class="orb-wrap">
+      <div class="orb-ring r1" id="ring1"></div>
+      <div class="orb-ring r2" id="ring2"></div>
+      <div class="orb-ring r3" id="ring3"></div>
+      <div class="orb" id="orb">
+        <div class="timer-display">
+          <div class="timer-min" id="t-min">20</div>
+          <div class="timer-sec" id="t-sec">:00</div>
+        </div>
+      </div>
+    </div>
+    <div class="breath-label" id="breath-label">tap orb to begin</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:.75rem">
+    <div class="timer-controls">
+      <button class="t-ctrl-btn" onclick="skipBack()" title="−1 min">⏮</button>
+      <button class="t-ctrl-main" id="play-pause-btn" onclick="togglePlayPause()">▶</button>
+      <button class="t-ctrl-btn" onclick="skipForward()" title="+1 min">⏭</button>
+    </div>
+    <button class="timer-end-btn" onclick="endSession()">End session</button>
+  </div>
+</div>
+
+<!-- ════════════════ LOG ════════════════ -->
+<div class="sec" id="sec-log">
+  <div class="streak-hero">
+    <div>
+      <div class="streak-num" id="log-streak">0</div>
+      <div class="streak-lbl">day streak 🔥</div>
+      <div class="streak-sub" id="log-streak-sub">Start today</div>
+    </div>
+    <div>
+      <div class="heatmap" id="log-heatmap"></div>
+    </div>
+    <div class="total-time">
+      <div class="total-time-val" id="log-total-hrs">0h</div>
+      <div class="total-time-lbl">total practice</div>
+    </div>
+  </div>
+  <div class="sec-lbl">Recent sessions</div>
+  <div id="log-list"><div style="text-align:center;padding:2rem;color:var(--tx3);font-size:13px">No sessions yet. Begin your first practice.</div></div>
+</div>
+
+<!-- ════════════════ LIBRARY ════════════════ -->
+<div class="sec" id="sec-library">
+  <div class="sec-lbl">Practice library</div>
+  <div id="library-list"></div>
+</div>
+
+<!-- ════════════════ INSIGHTS ════════════════ -->
+<div class="sec" id="sec-insights">
+  <div class="sec-lbl">Overview</div>
+  <div class="ins-grid">
+    <div class="ins-card"><div class="ins-val" id="ins-sessions">0</div><div class="ins-lbl">total sessions</div></div>
+    <div class="ins-card"><div class="ins-val" id="ins-streak">0</div><div class="ins-lbl">current streak 🔥</div></div>
+    <div class="ins-card"><div class="ins-val" id="ins-hours">0h</div><div class="ins-lbl">total hours</div></div>
+    <div class="ins-card"><div class="ins-val" id="ins-avg">0m</div><div class="ins-lbl">avg session</div></div>
+  </div>
+  <div class="sec-lbl">Activity — last 28 days</div>
+  <div class="card"><div class="heatmap" id="ins-heatmap"></div></div>
+  <div class="sec-lbl">Sessions by time of day</div>
+  <div class="card">
+    <div class="tod-bar" id="tod-bar"></div>
+    <div class="tod-lbl-row" id="tod-labels"></div>
+  </div>
+  <div class="sec-lbl">Favorite practices</div>
+  <div id="ins-favorites"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+var DB = {sessions:[], streak:0};
+function save(){localStorage.setItem('qiet-db',JSON.stringify(DB));}
+function load(){var d=localStorage.getItem('qiet-db');if(d)DB=JSON.parse(d);}
+function today(){return new Date().toISOString().slice(0,10);}
+
+var PRACTICES = [
+  {id:'sitting', icon:'🧘', name:'Sitting', fullName:'Sitting Meditation', origin:'Pan-traditional', desc:'Silent seated awareness. Observe breath and mind without interference. The foundation of all contemplative practice.', tags:['Shen','HT','Awareness'], bestHours:[5,6,7,21,22,23]},
+  {id:'breathwork', icon:'🌬️', name:'Breathwork', fullName:'Breath Regulation (调息)', origin:'Daoist / TCM', desc:'Conscious regulation of breath rhythm. Coordinates Lung Qi, calms the Shen, and balances Wei Qi at the surface.', tags:['LU','Qi','Regulation'], bestHours:[5,6,7,8]},
+  {id:'qigong', icon:'🐉', name:'Qi Gong', fullName:'Qi Gong Standing (站桩)', origin:'Classical Chinese', desc:'Standing post meditation. Roots the body, cultivates original Qi, and develops internal awareness through stillness in form.', tags:['Jing','Yuan Qi','Rooting'], bestHours:[7,8,9,17,18]},
+  {id:'nidra', icon:'🌙', name:'Nidra', fullName:'Yoga Nidra / Body Scan', origin:'Tantric / modern', desc:'Systematic withdrawal of awareness through body layers. Targets the hypnagogic state between waking and sleep. Deep restoration.', tags:['Shen','Rest','Yin'], bestHours:[21,22,23,0]},
+  {id:'visualization', icon:'💫', name:'Nei Guan', fullName:'Visualization / Nei Guan (内观)', origin:'Daoist inner alchemy', desc:'Inner observation. Guide awareness through organ systems, meridians, or classical visualization sequences. Develops Yi (intention).', tags:['Yi','LV','Imagination'], bestHours:[11,12,13]},
+  {id:'walking', icon:'🚶', name:'Walking', fullName:'Walking Meditation', origin:'Chan / Theravada', desc:'Conscious slow walking. Grounds excess Yang, moves stagnant Qi in the channels, and anchors Shen to the body.', tags:['LV','Grounding','Movement'], bestHours:[9,10,11,17,18,19]},
+];
+
+var BODY_CLOCK = [
+  {hours:[3,4], organ:'LU', text:'3–5am · Lung time — deep stillness, let breath restore itself'},
+  {hours:[5,6], organ:'LU', text:'5–7am · Large Intestine time — release what no longer serves. Breathwork ideal.'},
+  {hours:[7,8], organ:'ST', text:'7–9am · Stomach time — ground yourself before the day. Qi Gong ideal.'},
+  {hours:[9,10], organ:'SP', text:'9–11am · Spleen time — nourish Yi (intention). Walking or study meditation.'},
+  {hours:[11,12], organ:'HT', text:'11am–1pm · Heart time — peak Shen clarity. Visualization or inner cultivation.'},
+  {hours:[13,14], organ:'SI', text:'1–3pm · Small Intestine time — discern, sort, integrate. Short sitting practice.'},
+  {hours:[15,16], organ:'UB', text:'3–5pm · Bladder time — store Jing, minimize depletion. Rest or gentle practice.'},
+  {hours:[17,18], organ:'KD', text:'5–7pm · Kidney time — restore Jing. Qi Gong or standing post.'},
+  {hours:[19,20], organ:'PC', text:'7–9pm · Pericardium time — protect the Heart, wind down gently.'},
+  {hours:[21,22], organ:'SJ', text:'9–11pm · San Jiao time — harmonize the three burners. Nidra or sitting.'},
+  {hours:[23,0], organ:'GB', text:'11pm–1am · Gallbladder time — decision rests. Sleep is the practice now.'},
+  {hours:[1,2], organ:'LV', text:'1–3am · Liver time — blood returns to LV. Deep sleep is the practice.'},
+];
+
+var ELEMENTS = {
+  wood:{label:'🌿 Wood · Growth · Benevolence', color:'#5ab85a', mantra:'I grow with intention. My Liver Qi flows freely.'},
+  fire:{label:'🔥 Fire · Joy · Propriety', color:'#e06050', mantra:'My Heart is open. Shen rests in warmth and clarity.'},
+  earth:{label:'🌍 Earth · Stability · Faithfulness', color:'#c9973a', mantra:'I am centered. My Yi is steady, my SP nourished.'},
+  metal:{label:'🔮 Metal · Release · Righteousness', color:'#c0c8e0', mantra:'I release what does not serve. My Lung Qi descends freely.'},
+  water:{label:'💧 Water · Stillness · Wisdom', color:'#9b7dd4', mantra:'I rest in stillness. My Kidney Jing is preserved.'},
+};
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+var state = {
+  type: PRACTICES[0],
+  duration: 20,
+  opts: {bell:true, interval:true, ambient:false},
+  element: null,
+  running: false,
+  paused: false,
+  secondsLeft: 0,
+  totalSeconds: 0,
+  timerInterval: null,
+  breathInterval: null,
+  audioCtx: null,
+  sessionStart: null,
+};
+
+// ═══════════════════════════════════════
+// UI
+// ═══════════════════════════════════════
+function showSec(id){
+  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active')});
+  document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('active')});
+  document.getElementById('sec-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if(id==='log') renderLog();
+  if(id==='insights') renderInsights();
+  if(id==='library') renderLibrary();
+}
+function toggleTheme(){
+  var t=document.documentElement.getAttribute('data-theme');
+  var n=t==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  document.getElementById('theme-btn').textContent=n==='dark'?'☀️':'🌙';
+  localStorage.setItem('qiet-theme',n);
+}
+function toast(msg){
+  var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2400);
+}
+
+// ═══════════════════════════════════════
+// PRACTICE SETUP
+// ═══════════════════════════════════════
+function buildTypeScroll(){
+  var el=document.getElementById('type-scroll');
+  el.innerHTML=PRACTICES.map(function(p,i){
+    return '<button class="type-btn'+(i===0?' active':'')+'" onclick="setType(\''+p.id+'\',this)">'
+      +'<span class="t-icon">'+p.icon+'</span>'
+      +'<span class="t-name">'+p.name+'</span></button>';
+  }).join('');
+}
+
+function setType(id,el){
+  state.type=PRACTICES.find(function(p){return p.id===id});
+  document.querySelectorAll('.type-btn').forEach(function(b){b.classList.remove('active')});
+  el.classList.add('active');
+}
+
+function setDur(min,el){
+  state.duration=min;
+  document.querySelectorAll('.dur-btn').forEach(function(b){b.classList.remove('active')});
+  el.classList.add('active');
+}
+
+function toggleOpt(key,el){
+  state.opts[key]=!state.opts[key];
+  el.classList.toggle('active',state.opts[key]);
+}
+
+function setElement(key,el){
+  if(state.element===key){state.element=null;el.classList.remove('active');return;}
+  state.element=key;
+  document.querySelectorAll('.el-chip').forEach(function(b){b.classList.remove('active')});
+  el.classList.add('active');
+}
+
+function updateBodyClock(){
+  var h=new Date().getHours();
+  var slot=BODY_CLOCK.find(function(s){return s.hours.indexOf(h)>-1})||BODY_CLOCK[0];
+  document.getElementById('clock-text').textContent=slot.text;
+}
+
+// ═══════════════════════════════════════
+// AUDIO (Web Audio API — no files needed)
+// ═══════════════════════════════════════
+function getAudioCtx(){
+  if(!state.audioCtx) state.audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  return state.audioCtx;
+}
+
+function playBell(freq, dur, vol){
+  try{
+    var ctx=getAudioCtx();
+    var osc=ctx.createOscillator();
+    var gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.type='sine';
+    osc.frequency.setValueAtTime(freq||528,ctx.currentTime);
+    gain.gain.setValueAtTime(vol||0.4,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+(dur||3));
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime+(dur||3));
+  }catch(e){}
+}
+
+function playAmbient(){
+  // gentle drone — layered sine waves
+  try{
+    var ctx=getAudioCtx();
+    [110,220,330].forEach(function(f,i){
+      var osc=ctx.createOscillator();
+      var gain=ctx.createGain();
+      osc.connect(gain);gain.connect(ctx.destination);
+      osc.type='sine';
+      osc.frequency.value=f;
+      gain.gain.value=0.03/(i+1);
+      osc.start();
+      state._ambientOscs=state._ambientOscs||[];
+      state._ambientOscs.push(osc);
+    });
+  }catch(e){}
+}
+
+function stopAmbient(){
+  (state._ambientOscs||[]).forEach(function(o){try{o.stop();}catch(e){}});
+  state._ambientOscs=[];
+}
+
+// ═══════════════════════════════════════
+// BREATHING ANIMATION
+// ═══════════════════════════════════════
+var BREATH_PATTERNS = {
+  sitting:   {inhale:4, hold:0, exhale:6, hold2:0},
+  breathwork:{inhale:4, hold:4, exhale:4, hold2:4},
+  qigong:    {inhale:5, hold:0, exhale:5, hold2:0},
+  nidra:     {inhale:4, hold:0, exhale:8, hold2:0},
+  visualization:{inhale:4,hold:2,exhale:6,hold2:2},
+  walking:   {inhale:3, hold:0, exhale:3, hold2:0},
+};
+
+var breathPhase=0, breathTimer=null;
+
+function startBreathing(){
+  stopBreathing();
+  var pat=BREATH_PATTERNS[state.type.id]||BREATH_PATTERNS.sitting;
+  var orb=document.getElementById('orb');
+  var lbl=document.getElementById('breath-label');
+  var phases=[
+    {name:'Inhale',dur:pat.inhale,scale:1.22,ease:'ease-in'},
+    {name:'Hold',dur:pat.hold,scale:1.22,ease:'linear'},
+    {name:'Exhale',dur:pat.exhale,scale:1,ease:'ease-out'},
+    {name:'',dur:pat.hold2,scale:1,ease:'linear'},
+  ].filter(function(p){return p.dur>0});
+  var idx=0;
+  function runPhase(){
+    var p=phases[idx%phases.length];
+    orb.style.transition='transform '+p.dur+'s '+p.ease;
+    orb.style.transform='scale('+p.scale+')';
+    lbl.textContent=p.name;
+    idx++;
+    breathTimer=setTimeout(runPhase,p.dur*1000);
+  }
+  runPhase();
+}
+
+function stopBreathing(){
+  clearTimeout(breathTimer);
+  var orb=document.getElementById('orb');
+  if(orb){orb.style.transition='transform .8s ease';orb.style.transform='scale(1)';}
+  var lbl=document.getElementById('breath-label');
+  if(lbl) lbl.textContent='';
+}
+
+// ═══════════════════════════════════════
+// TIMER
+// ═══════════════════════════════════════
+function startSession(){
+  state.secondsLeft = state.duration * 60;
+  state.totalSeconds = state.duration * 60;
+  state.running=false;state.paused=false;
+  state.sessionStart=new Date().toISOString();
+
+  // overlay setup
+  document.getElementById('t-type-lbl').textContent=state.type.fullName;
+  var elLbl=document.getElementById('t-element-lbl');
+  if(state.element&&ELEMENTS[state.element]){
+    elLbl.textContent=ELEMENTS[state.element].mantra;
+    elLbl.style.color=ELEMENTS[state.element].color;
+  } else {
+    elLbl.textContent='';
+  }
+  updateTimerDisplay();
+  document.getElementById('play-pause-btn').textContent='▶';
+  document.getElementById('breath-label').textContent='tap orb to begin';
+  document.getElementById('timer-overlay').classList.add('active');
+  document.body.style.overflow='hidden';
+
+  if(state.opts.bell) setTimeout(function(){playBell(528,3,.35)},400);
+}
+
+function togglePlayPause(){
+  if(!state.running&&!state.paused){
+    // first start
+    state.running=true;
+    startTick();
+    startBreathing();
+    if(state.opts.ambient) playAmbient();
+    document.getElementById('play-pause-btn').textContent='⏸';
+  } else if(state.running){
+    state.running=false;state.paused=true;
+    clearInterval(state.timerInterval);
+    stopBreathing();
+    document.getElementById('play-pause-btn').textContent='▶';
+    document.getElementById('breath-label').textContent='paused';
+  } else {
+    state.running=true;state.paused=false;
+    startTick();
+    startBreathing();
+    document.getElementById('play-pause-btn').textContent='⏸';
+  }
+}
+
+function startTick(){
+  clearInterval(state.timerInterval);
+  state.timerInterval=setInterval(function(){
+    if(!state.running) return;
+    state.secondsLeft--;
+    updateTimerDisplay();
+    // interval bell every 5 min
+    if(state.opts.interval && state.secondsLeft>0 && state.secondsLeft%(5*60)===0){
+      playBell(440,2,.2);
+    }
+    if(state.secondsLeft<=0){
+      completeSession();
+    }
+  },1000);
+}
+
+function updateTimerDisplay(){
+  var m=Math.floor(state.secondsLeft/60);
+  var s=state.secondsLeft%60;
+  document.getElementById('t-min').textContent=m;
+  document.getElementById('t-sec').textContent=':'+(s<10?'0':'')+s;
+}
+
+function skipBack(){state.secondsLeft=Math.max(0,state.secondsLeft-60);updateTimerDisplay();}
+function skipForward(){state.secondsLeft=Math.min(state.totalSeconds,state.secondsLeft+60);updateTimerDisplay();}
+
+function completeSession(){
+  clearInterval(state.timerInterval);
+  stopBreathing();
+  stopAmbient();
+  state.running=false;
+  if(state.opts.bell) playBell(528,4,.4);
+  var actualMin=Math.round((state.totalSeconds-state.secondsLeft)/60)||state.duration;
+  saveSession(actualMin, true);
+  setTimeout(function(){closeTimerOverlay();toast('Session complete 🎋 '+actualMin+' minutes of practice');},1000);
+}
+
+function endSession(){
+  clearInterval(state.timerInterval);
+  stopBreathing();
+  stopAmbient();
+  state.running=false;
+  var actualMin=Math.max(1,Math.round((state.totalSeconds-state.secondsLeft)/60));
+  saveSession(actualMin, false);
+  closeTimerOverlay();
+  toast('Session logged — '+actualMin+' min');
+}
+
+function closeTimerOverlay(){
+  document.getElementById('timer-overlay').classList.remove('active');
+  document.body.style.overflow='';
+}
+
+function saveSession(minutes, completed){
+  DB.sessions.unshift({
+    date:today(),
+    time:new Date().toTimeString().slice(0,5),
+    hour:new Date().getHours(),
+    type:state.type.id,
+    typeName:state.type.fullName,
+    icon:state.type.icon,
+    minutes:minutes,
+    element:state.element,
+    completed:completed,
+  });
+  save();
+}
+
+// ═══════════════════════════════════════
+// LOG
+// ═══════════════════════════════════════
+function calcStreak(){
+  var dates=[...new Set(DB.sessions.map(function(s){return s.date}))].sort().reverse();
+  var streak=0;
+  for(var i=0;i<60;i++){
+    var d=new Date();d.setDate(d.getDate()-i);
+    var ds=d.toISOString().slice(0,10);
+    if(dates.indexOf(ds)>-1) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function totalMinutes(){return DB.sessions.reduce(function(a,b){return a+b.minutes},0);}
+
+function renderLog(){
+  var streak=calcStreak();
+  var mins=totalMinutes();
+  document.getElementById('log-streak').textContent=streak;
+  document.getElementById('log-streak-sub').textContent=streak===0?'Start today':streak+' days strong';
+  var h=Math.floor(mins/60),m=mins%60;
+  document.getElementById('log-total-hrs').textContent=h>0?h+'h '+m+'m':m+'m';
+
+  // heatmap
+  var hm=document.getElementById('log-heatmap');
+  hm.innerHTML='';
+  var dates=DB.sessions.map(function(s){return s.date});
+  for(var i=20;i>=0;i--){
+    var d=new Date();d.setDate(d.getDate()-i);
+    var ds=d.toISOString().slice(0,10);
+    var cnt=dates.filter(function(x){return x===ds}).length;
+    hm.innerHTML+='<div class="hm-cell'+(cnt>0?' '+(cnt>1?'l3':'l2'):'')+'" title="'+ds+'"></div>';
+  }
+
+  // sessions list
+  var el=document.getElementById('log-list');
+  if(!DB.sessions.length){el.innerHTML='<div style="text-align:center;padding:2rem;color:var(--tx3);font-size:13px">No sessions yet.</div>';return;}
+  el.innerHTML=DB.sessions.slice(0,40).map(function(s){
+    var dateStr=new Date(s.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    var elBadge=s.element?(' · '+s.element):'';
+    return '<div class="log-entry">'
+      +'<div class="le-icon">'+s.icon+'</div>'
+      +'<div class="le-info">'
+      +'<div class="le-name">'+s.typeName+'</div>'
+      +'<div class="le-meta">'+dateStr+' · '+s.time+elBadge+(s.completed?' · ✓':'')+'</div>'
+      +'</div>'
+      +'<div class="le-dur">'+s.minutes+'m</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// LIBRARY
+// ═══════════════════════════════════════
+function renderLibrary(){
+  var el=document.getElementById('library-list');
+  el.innerHTML=PRACTICES.map(function(p){
+    var count=DB.sessions.filter(function(s){return s.type===p.id}).length;
+    var mins=DB.sessions.filter(function(s){return s.type===p.id}).reduce(function(a,b){return a+b.minutes},0);
+    return '<div class="lib-card" onclick="quickStartType(\''+p.id+'\')">'
+      +'<div class="lib-card-hdr"><div class="lib-icon">'+p.icon+'</div><div><div class="lib-name">'+p.fullName+'</div><div class="lib-origin">'+p.origin+(count>0?' · '+count+' sessions · '+mins+'m total':'')+'</div></div></div>'
+      +'<div class="lib-desc">'+p.desc+'</div>'
+      +'<div class="lib-tags">'+p.tags.map(function(t){return '<span class="lib-tag">'+t+'</span>'}).join('')+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function quickStartType(id){
+  var p=PRACTICES.find(function(x){return x.id===id});
+  if(p){
+    state.type=p;
+    showSec('practice');
+    document.querySelectorAll('.pill')[0].classList.add('active');
+    document.querySelectorAll('.pill').forEach(function(p,i){if(i>0)p.classList.remove('active')});
+    document.querySelectorAll('.type-btn').forEach(function(b,i){
+      b.classList.toggle('active',PRACTICES[i]&&PRACTICES[i].id===id);
+    });
+    window.scrollTo(0,0);
+  }
+}
+
+// ═══════════════════════════════════════
+// INSIGHTS
+// ═══════════════════════════════════════
+function renderInsights(){
+  var streak=calcStreak();
+  var mins=totalMinutes();
+  var h=Math.floor(mins/60),m=mins%60;
+  var avg=DB.sessions.length>0?Math.round(mins/DB.sessions.length):0;
+  document.getElementById('ins-sessions').textContent=DB.sessions.length;
+  document.getElementById('ins-streak').textContent=streak;
+  document.getElementById('ins-hours').textContent=h>0?h+'h':m+'m';
+  document.getElementById('ins-avg').textContent=avg+'m';
+
+  // heatmap 28d
+  var hm=document.getElementById('ins-heatmap');
+  hm.innerHTML='';
+  for(var i=27;i>=0;i--){
+    var d=new Date();d.setDate(d.getDate()-i);
+    var ds=d.toISOString().slice(0,10);
+    var cnt=DB.sessions.filter(function(s){return s.date===ds}).length;
+    hm.innerHTML+='<div class="hm-cell'+(cnt===0?'':cnt===1?' l1':cnt===2?' l2':' l3')+'" title="'+ds+': '+cnt+'"></div>';
+  }
+
+  // time of day
+  var hourBuckets=Array(6).fill(0);
+  var labels=['12a–4a','4a–8a','8a–12p','12p–4p','4p–8p','8p–12a'];
+  DB.sessions.forEach(function(s){
+    var b=Math.floor(((s.hour||0)%24)/4);
+    hourBuckets[b]=(hourBuckets[b]||0)+1;
+  });
+  var maxB=Math.max(1,...hourBuckets);
+  var bar=document.getElementById('tod-bar');
+  var lrow=document.getElementById('tod-labels');
+  bar.innerHTML=hourBuckets.map(function(v,i){
+    var h=Math.max(2,Math.round((v/maxB)*46));
+    var peak=v===maxB&&v>0;
+    return '<div class="tod-col'+(peak?' peak':'')+'" style="height:'+h+'px" title="'+v+' sessions"></div>';
+  }).join('');
+  lrow.innerHTML=labels.map(function(l){return '<div class="tod-lbl">'+l+'</div>'}).join('');
+
+  // favorites
+  var counts={};
+  DB.sessions.forEach(function(s){counts[s.type]=(counts[s.type]||0)+1;});
+  var sorted=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]}).slice(0,4);
+  var favEl=document.getElementById('ins-favorites');
+  if(!sorted.length){favEl.innerHTML='<div class="card" style="text-align:center;color:var(--tx3);font-size:13px;padding:1.25rem">Practice to see your favorites</div>';return;}
+  favEl.innerHTML=sorted.map(function(id){
+    var p=PRACTICES.find(function(x){return x.id===id})||{icon:'🧘',fullName:id};
+    var totalM=DB.sessions.filter(function(s){return s.type===id}).reduce(function(a,b){return a+b.minutes},0);
+    return '<div class="log-entry"><div class="le-icon">'+p.icon+'</div>'
+      +'<div class="le-info"><div class="le-name">'+p.fullName+'</div>'
+      +'<div class="le-meta">'+counts[id]+' sessions · '+totalM+' min total</div></div>'
+      +'<div class="le-dur" style="color:var(--teal)">'+Math.round(totalM/counts[id])+'m avg</div></div>';
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+load();
+var savedTheme=localStorage.getItem('qiet-theme')||'dark';
+document.documentElement.setAttribute('data-theme',savedTheme);
+document.getElementById('theme-btn').textContent=savedTheme==='dark'?'☀️':'🌙';
+buildTypeScroll();
+updateBodyClock();
+setInterval(updateBodyClock,60000);
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('/qi-et-please/sw.js',{scope:'/qi-et-please/'})
+      .then(function(r){console.log('SW',r.scope)}).catch(function(e){console.log('SW fail',e)});
+  });
+}
+</script>
+</body>
+</html>

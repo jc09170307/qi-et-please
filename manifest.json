@@ -1,0 +1,14 @@
+{
+  "name": "Qi-et Please",
+  "short_name": "Qi-et Please",
+  "description": "Meditation, Qi Gong, and breathwork timer with session tracking",
+  "start_url": "/qi-et-please/",
+  "display": "standalone",
+  "background_color": "#0d0f1a",
+  "theme_color": "#7c5cbf",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
